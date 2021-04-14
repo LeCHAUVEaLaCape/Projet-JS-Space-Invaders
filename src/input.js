@@ -1,5 +1,3 @@
-// import Joueur from "./joueur";
-
 //keycode   38=haut   39= droite  37= gauche  40= bas
 export default class InputHandler{
     constructor(joueur,ctx){
