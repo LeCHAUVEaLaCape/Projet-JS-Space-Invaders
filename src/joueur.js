@@ -24,6 +24,8 @@ export default class Joueur{
     }
     update(deltatime){
         this.position.x +=this.speed;
+        
+        // peut-etre pas le plus opti
         this.tableau = this.tableau.map(e=>{
             e[1]+= -this.vitesseDesTirs
             return e
