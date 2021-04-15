@@ -37,11 +37,6 @@ export default class Game {
     }
     draw(ctx){
         this.joueur.dessin(ctx)
-        
-        // Fond bleu pour pouvoir distinguer le menu pause - temporaire
-        ctx.rect(0,0,this.gameWidth,this.gameHeight)
-        ctx.fillStyle = "rgba(0,200,255,0.5)"
-        ctx.fill()
 
 
         // Fond noir transparent quand on appuie sur ESC/jeu en pause
