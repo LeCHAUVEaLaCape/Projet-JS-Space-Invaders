@@ -1,7 +1,7 @@
 import InputHandler from "./input.js"
 import Joueur from "./joueur.js"
 import Ennemie from "./ennemie.js"
-import {buildLevel,level_Test} from "./levels.js"
+import { buildLevel, level_Test } from "./levels.js"
 
 
 const GAMESTATE = {
@@ -15,50 +15,54 @@ const GAMESTATE = {
 
 
 export default class Game {
-    constructor(gameWidth,gameHeight){
-        this.gameWidth=gameWidth
-        this.gameHeight=gameHeight
-        
+    constructor(gameWidth, gameHeight) {
+        this.gameWidth = gameWidth
+        this.gameHeight = gameHeight
+
     }
-    init(){
+    init() {
 
         this.GAMESTATE = GAMESTATE.RUNNING //On indique que le jeu est "en cours".
 
-        this.joueur= new Joueur(this)
+        this.joueur = new Joueur(this)
 
-        this.ennemies = buildLevel(this.gameHeight,level_Test) //   construit le level
-        
-        new InputHandler(this.joueur,this);
+        this.ennemies = buildLevel(this.gameHeight, level_Test) //   construit le level
+
+        new InputHandler(this.joueur, this);
     }
-    update(deltatime){
-        if(this.GAMESTATE == GAMESTATE.PAUSED) return // Ne pas update si le jeu est en pause
+    update(deltatime) {
+        if (this.GAMESTATE == GAMESTATE.PAUSED) return // Ne pas update si le jeu est en pause
         this.joueur.update(deltatime)
-        
+
     }
-    draw(ctx){
+    draw(ctx) {
         this.joueur.dessin(ctx)
 
 
         // Fond noir transparent quand on appuie sur ESC/jeu en pause
-        if (this.GAMESTATE == GAMESTATE.PAUSED) {  
+        if (this.GAMESTATE == GAMESTATE.PAUSED) {
             ctx.rect(0, 0, this.gameWidth, this.gameHeight)
             ctx.fillStyle = "rgba(0,0,0,0.5)"
             ctx.fill()
+            ctx.font = "30px Arial";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.fillText("Paused", this.gameWidth / 2, this.gameHeight / 2);
         }
 
         // affiche chaque ennemie dans
-        this.ennemies.forEach(e=>{
+        this.ennemies.forEach(e => {
             e.draw(ctx)
         })
-        
+
     }
-    
-    togglePause(){
+
+    togglePause() {
         //Si le jeu est en cours; le mettre en pause.
         //Sinon, le reprendre.
-        if(this.GAMESTATE == GAMESTATE.RUNNING){
+        if (this.GAMESTATE == GAMESTATE.RUNNING) {
             this.GAMESTATE = GAMESTATE.PAUSED
-        }else{
+        } else {
             this.GAMESTATE = GAMESTATE.RUNNING
         }
 
