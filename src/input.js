@@ -16,7 +16,10 @@ export default class InputHandler{
                     joueur.actionTirer()
                     break;
                 case "Escape":
-                    game.togglePause()
+                    game.escapeActions()
+                    break;
+                case "Enter":
+                    game.enterActions()
                     break;
             }
         });
