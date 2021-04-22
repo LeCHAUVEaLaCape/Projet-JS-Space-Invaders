@@ -11,7 +11,7 @@ let game = new Game(game_width,game_height)
 game.init()
 let lastime =0;
 
-const gameLoop =(horodatage)=>{
+export default function gameLoop(horodatage){
     let deltatime = horodatage - lastime;
     lastime =horodatage;
 
