@@ -1,4 +1,4 @@
-export function collisionDetection(joueur,level){
+export function collisionDetection(joueur,level,terminer){
     // console.error(tableau2.lenRow)
     let tirADelete 
     let alienADelete
@@ -19,7 +19,8 @@ export function collisionDetection(joueur,level){
                         alienRowToDelete =k
                         tirADelete =indexTir
                         return true
-                    }
+                    };
+                    
                 }
             }
         }
@@ -27,8 +28,9 @@ export function collisionDetection(joueur,level){
     }
     // On parcours le tableau des "tirs"
     for (let j in joueur.tableau){
-        if (temp(j)==true)break
+        if (temp(j)==true) break
     }
+
     // A DEPLACER
     if (tirADelete != undefined){
         // Pour supprimer le tir
@@ -43,9 +45,7 @@ export function collisionDetection(joueur,level){
         for (let i in level.aliens){
             let resTmp =[]
             for (let j in level.aliens[i]){
-
                 (j==alienADelete && i ==alienRowToDelete) ?resTmp.push(null): resTmp.push(level.aliens[i][j]);
-            
             }
             res.push(resTmp)
         }
@@ -54,6 +54,7 @@ export function collisionDetection(joueur,level){
         // Redefinit le bord de droite des aliens
         function tmpDroite(j){
             for (let i=level.aliens[j].length-1;i>=0;i--){
+                // console.error(i)
                 if (level.aliens[j][i]!= null){
                     level.rowDroite = j
                     level.indexDroite =i
@@ -78,8 +79,9 @@ export function collisionDetection(joueur,level){
             if(droite==false) tmpDroite(j)
             if(gauche==false) tmpGauche(j)
         }
-        
-        // for (let )
+        if (droite==false || gauche==false){
+            terminer =true
+        }
     }
 
 }

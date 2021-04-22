@@ -7,10 +7,11 @@ export class Level{
         this.indexDroite = whatLevel[0].length -1
         this.rowDroite = 0
         
+        this.tableau =[] // Array des "tirs"
         this.game = game // Attention à ne pas l'utliser n'importe comment
         this.height = 32
-        this.maxSpeed =0.2
-        this.speed =0.2
+        this.maxSpeed =1
+        this.speed =1
         
     }
     update(deltatime){

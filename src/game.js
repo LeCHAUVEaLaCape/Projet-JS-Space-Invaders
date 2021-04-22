@@ -14,7 +14,7 @@ export default class Game {
     constructor(gameWidth,gameHeight){
         this.gameWidth=gameWidth
         this.gameHeight=gameHeight
-        
+        this.terminer = false
     }
     init(){  
 
@@ -28,7 +28,7 @@ export default class Game {
     update(deltatime){
         if(this.GAMESTATE == GAMESTATE.PAUSED) return // Ne pas update si le jeu est en pause
         
-        collisionDetection(this.joueur,this.level)
+        collisionDetection(this.joueur,this.level,this.terminer)
 
         this.joueur.update(deltatime)
         this.level.update(deltatime)
