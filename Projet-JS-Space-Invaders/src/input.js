@@ -1,6 +1,7 @@
+
 //keycode   38=haut   39= droite  37= gauche  40= bas
 export default class InputHandler{
-    constructor(joueur,ctx){
+    constructor(joueur,game){
         // touche appuyée
         document.addEventListener('keydown',event=>{
             // alert(event.code);
@@ -13,7 +14,13 @@ export default class InputHandler{
                     break;
                 case "Space":
                     joueur.actionTirer()
-                    break 
+                    break;
+                case "Escape":
+                    game.escapeActions()
+                    break;
+                case "Enter":
+                    game.enterActions()
+                    break;
             }
         });
         // touche relachée

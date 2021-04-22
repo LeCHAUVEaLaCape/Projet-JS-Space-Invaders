@@ -8,10 +8,9 @@ export default class Ennemie {
         this.height = this.image.naturalHeight
         this.position = position
     }
-    update(){// pas utiliser
-    }
+    update(){}
     
-    draw(ctx){ // pas utiliser
-        // ctx.drawImage(this.image,this.position.x,this.position.y,this.width,this.height)
+    draw(ctx){
+        ctx.drawImage(this.image,this.position.x,this.position.y,this.width,this.height)
     }
 }
