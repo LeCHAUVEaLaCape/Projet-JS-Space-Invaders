@@ -1,3 +1,4 @@
+import Tir from "./Tir.js";
 export default class Joueur{
     constructor(game){
         this.player =   document.getElementById("img_player")
@@ -5,23 +6,28 @@ export default class Joueur{
         this.game_height=   game.gameHeight
         this.width=     this.player.naturalWidth;
         this.height =   this.player.naturalHeight;
+
         this.maxspeed = 6;
         this.speed= 0;
         this.position = {
             x: this.game_width /2 - this.width/2,
             y: game.gameHeight - this.height - 50,
         }
+
         // tableau des tirs
         this.tableau = []
         this.game =game
+        this.cooldown =0
     }
     dessin(ctx){
-        this.tableau.forEach(e=>{
+        this.tableau.forEach(e=>{ // A VOIR
             e.draw(ctx)
         })
         ctx.drawImage(this.player,this.position.x,this.position.y)
     }
     update(deltatime){
+        this.cooldown +=deltatime
+        
         this.position.x +=this.speed;
         
         this.tableau = this.tableau.filter(e=> e.update() ==false)
@@ -39,28 +45,9 @@ export default class Joueur{
         this.speed =0;
     }
     actionTirer(){
-        this.tableau.push(new Tir(this.position.x,this.position.y,this.game))
-    }
-}
-class Tir{
-    constructor(positionX,positionY,game){
-        this.image = document.getElementById('img_tir')
-        this.position ={
-            x: positionX,
-            y: positionY,
+        if (this.cooldown>1000){
+            this.tableau.push(new Tir(this.position.x,this.position.y,this.game))
+            this.cooldown =0
         }
-        this.size = 16
-        this.aliens =game.level.ennemies
-        this.level = game.level
-        this.vitesseDesTirs= 5
-    }
-    update(){
-        this.position.y += -this.vitesseDesTirs
-        // Retourne true ou false
-        // pour supprimer le tir lorsqu'il sort de l'écran (true)
-        return (this.position.y<0)
-    }
-    draw(ctx){
-        ctx.drawImage(this.image,this.position.x,this.position.y)
     }
 }

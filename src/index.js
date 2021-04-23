@@ -14,8 +14,11 @@ let lastime =0;
 export default function gameLoop(horodatage){
     let deltatime = horodatage - lastime;
     lastime =horodatage;
-   
+    // if(game.terminer == true){
+
+    // }
     ctx.clearRect(0,0,game_width,game_height);
+
     game.update(deltatime)
     game.draw(ctx)
 

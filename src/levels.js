@@ -4,20 +4,35 @@ export class Level{
 
         this.indexGauche = 0
         this.rowGauche = 0
-        this.indexDroite = whatLevel[0].length -1
+        this.indexDroite = whatLevel[0].length -1 //A FAIRE
         this.rowDroite = 0
         
-        this.tableau =[] // Array des "tirs"
         this.game = game // Attention à ne pas l'utliser n'importe comment
         this.height = 32
-        this.maxSpeed =1
-        this.speed =1
+        this.width = 32
         
+        this.stackspeed = 0
+        this.maxSpeed =0.3
+        this.speed =0.3
+        this.game =game
+
+        this.cooldown = 0
+        this.count=0
+        this.indexPourTirAuto =[]
+        this.tableau =[] // Array des "tirs"
+    }
+    init(){
+        // initialise l'attribut tableau pour les tirs "auto" des aliens
+        this.indexRefreshment()
+        this.count = this.aliens[0].length
     }
     update(deltatime){
+        this.cooldown += deltatime
+        this.tirAuto()
+        this.tableau = this.tableau.filter(e=> e.update() ==false)
         // position x du dernier alien de la rangée
 
-        if(this.aliens[this.rowDroite][this.indexDroite].position.x+32> 800){
+        if(this.aliens[this.rowDroite][this.indexDroite].position.x+this.width> this.game.gameWidth){
             this.bougeAGauche()
             this.goDown()
         }else if (this.aliens[this.rowGauche][this.indexGauche].position.x < 0) {
@@ -27,11 +42,15 @@ export class Level{
         this.deplacement()
     }
     draw(ctx){
-        this.aliens.forEach(E=>{
-            E.forEach(e=>{
-                if (e!=null)    ctx.drawImage(e.image,e.position.x, e.position.y ,e.width,e.height)
-            })
-        })
+        for(let E of this.aliens){
+            for (let e of E){
+                if(e!=null)     ctx.drawImage(e.image,e.position.x, e.position.y ,e.width,e.height)
+            }
+        }
+        for (let e of this.tableau){
+            e.draw(ctx)
+        }
+
     }
     goDown(){
         let res =[]
@@ -57,7 +76,7 @@ export class Level{
                 if (f==null) resTmp.push(null)
                 else{
                     let fTmp =f
-                    fTmp.position.x += this.speed
+                    fTmp.position.x += this.speed + this.stackspeed
                     resTmp.push(fTmp)
                 }
             }
@@ -71,6 +90,36 @@ export class Level{
     bougeAGauche(){
         this.speed = -this.maxSpeed
     }
+    indexRefreshment(){
+        this.indexPourTirAuto= []
+        for (let i in this.aliens[0]){ // ranger
+            for(let j in this.aliens){ // colonne
+                // 
+                if(j==this.aliens.length-1) {
+                    if (this.aliens[j][i]==null){
+                        this.indexPourTirAuto.push(j-1);
+                    }else{
+                        this.indexPourTirAuto.push(parseInt(j))
+                    }
+                }else if (this.aliens[j][i]==null){
+                    this.indexPourTirAuto.push(j-1);
+                    break
+                }
+            }
+        }
+    }
+    tirAuto(){
+        if (this.cooldown>1000){
+            this.cooldown= this.cooldown - 1000
+            let index = getRandomInt(this.count) 
+            if(this.indexPourTirAuto[index] != -1){
+                // Selectionne un objet Alien
+                let select = this.aliens[ this.indexPourTirAuto[index] ][index]
+
+                this.tableau.push(new TirAlien(select.position.x,select.position.y,this.game))
+            }
+        }
+    }
 }
 function buildLevel(game,whatLevel){
     let aliens = []
@@ -82,7 +131,7 @@ function buildLevel(game,whatLevel){
                     x:  index*32,
                     y:  20+32*rangeeIndex
                 }
-                resTmp.push(new Ennemie(game,position))
+                resTmp.push(new Alien(game,position))
             }
             else{
                 resTmp.push(null)
@@ -93,11 +142,34 @@ function buildLevel(game,whatLevel){
     
     return aliens
 }
+function getRandomInt(max){
+    return Math.floor(Math.random()*max)
+}
+class TirAlien {
+    constructor(positionX,positionY,game){
+        this.image = document.getElementById('img_tir')
+        this.position ={
+            x: positionX,
+            y: positionY,
+        }
+        this.size = 16
+        this.aliens =game.level.ennemies
+        this.level = game.level
+        this.vitesseDesTirs= 5
+    }
+    update(){
+        this.position.y += this.vitesseDesTirs
+        // Retourne true ou false
+        // pour supprimer le tir lorsqu'il sort en bas de l'écran (true)
+        return (this.position.y>600)
+    }
+    draw(ctx){
+        ctx.drawImage(this.image,this.position.x,this.position.y)
+    }
+}
 
-
-
-class Ennemie {
-    //créer un ennemie avec sa position (x et y)
+class Alien {
+    //créer un Alien avec sa position (x et y)
     constructor(game,position){
         this.image = document.getElementById("alien")
         this.width = this.image.naturalWidth 
