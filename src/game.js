@@ -31,7 +31,6 @@ export default class Game {
 
         this.joueur.update(deltatime)
         this.level.update(deltatime)
-
     }
     draw(ctx) {
         // affiche chaque alien dans le ctx

@@ -15,6 +15,12 @@ export function collisionDetection(joueur,level,terminer){
                         && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+32){ //X
                         // console.log("touché")
                         // noter les index
+                        level.maxSpeed +=0.1 
+                        if (level.speed<0){
+                            level.speed = -level.maxSpeed
+                        }else{
+                            level.speed = level.maxSpeed
+                        }
                         alienADelete =i
                         alienRowToDelete =k
                         tirADelete =indexTir
@@ -53,18 +59,17 @@ export function collisionDetection(joueur,level,terminer){
 
         // Redefinit le bord de droite des aliens
         function tmpDroite(j){
-            for (let i=level.aliens[j].length-1;i>=0;i--){
-                // console.error(i)
-                if (level.aliens[j][i]!= null){
-                    level.rowDroite = j
-                    level.indexDroite =i
+            for (let i=level.aliens.length-1;i>=0;i--){
+                if (level.aliens[i][j]!= null){
+                    level.rowDroite = i
+                    level.indexDroite =j
                     droite =true
                     break
                 }
             }
         }
         function tmpGauche(j) {
-            for(let i = 0;i<level.aliens.length;i++){
+            for(let i in level.aliens){
                 if (level.aliens[j][i]!=null){
                     level.rowGauche = j
                     level.indexGauche = i
@@ -76,12 +81,16 @@ export function collisionDetection(joueur,level,terminer){
         let droite = false
         let gauche = false
         for (let j = 0;j<level.aliens.length;j++){
-            if(droite==false) tmpDroite(j)
             if(gauche==false) tmpGauche(j)
         }
+        for (let j =level.aliens[0].length-1;j>=0;j--){
+            if(droite==false) tmpDroite(j)
+        }
+
         if (droite==false || gauche==false){
             terminer =true
         }
+        level.indexRefreshment()
     }
 
 }
