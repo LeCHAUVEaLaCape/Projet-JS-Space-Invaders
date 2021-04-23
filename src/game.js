@@ -22,7 +22,7 @@ export default class Game {
 
         this.joueur= new Joueur(this)
         this.level = new Level(this,level_Test)
-        
+        this.level.init()
         new InputHandler(this.joueur,this);
     }
     update(deltatime){
@@ -32,6 +32,7 @@ export default class Game {
 
         this.joueur.update(deltatime)
         this.level.update(deltatime)
+        
     }
     draw(ctx){
         // affiche chaque alien dans le ctx
