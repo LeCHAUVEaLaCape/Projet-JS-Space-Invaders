@@ -4,8 +4,8 @@ export default class Joueur{
         this.player =   document.getElementById("img_player")
         this.game_width=    game.gameWidth
         this.game_height=   game.gameHeight
-        this.width=     this.player.naturalWidth;
-        this.height =   this.player.naturalHeight;
+        this.width=     this.player.naturalWidth; //17
+        this.height =   this.player.naturalHeight; // 17
 
         this.maxspeed = 6;
         this.speed= 0;
@@ -19,7 +19,7 @@ export default class Joueur{
         this.game =game
         this.cooldown =0
     }
-    dessin(ctx){
+    draw(ctx){
         this.tableau.forEach(e=>{ // A VOIR
             e.draw(ctx)
         })

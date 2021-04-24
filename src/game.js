@@ -1,7 +1,7 @@
 import InputHandler from "./input.js"
 import Joueur from "./joueur.js"
 import {Level , level_Test} from "./levels.js"
-import {collisionDetection} from "./collision.js"
+import {collisionDetectionTirJoueur} from "./collision.js"
 
 const GAMESTATE = {
     PAUSED: 0,
@@ -14,21 +14,25 @@ export default class Game {
     constructor(gameWidth,gameHeight){
         this.gameWidth=gameWidth
         this.gameHeight=gameHeight
-        this.terminer = false
         this.GAMESTATE = GAMESTATE.MENU
         this.joueur= new Joueur(this)
         this.level = new Level(this,level_Test)
-        this.level.init()
+        
         new InputHandler(this.joueur,this);
     }
     init(){  
+        this.level.init()
         this.GAMESTATE = GAMESTATE.RUNNING //On indique que le jeu est "en cours"
     }
     update(deltatime){
         if(this.GAMESTATE == GAMESTATE.PAUSED || this.GAMESTATE == GAMESTATE.MENU) return // Ne pas update si le jeu est en pause
         
-        collisionDetection(this.joueur,this.level,this.terminer)
-
+        collisionDetectionTirJoueur(this.joueur,this.level)
+        
+        if(this.level.terminer == true){
+            this.GAMESTATE= GAMESTATE.MENU
+            return 
+        }
         this.joueur.update(deltatime)
         this.level.update(deltatime)
         
@@ -36,7 +40,7 @@ export default class Game {
     draw(ctx){
         // affiche chaque alien dans le ctx
         this.level.draw(ctx)
-        this.joueur.dessin(ctx)
+        this.joueur.draw(ctx)
         
         // Fond noir transparent quand on appuie sur ESC/jeu en pause
         if (this.GAMESTATE == GAMESTATE.PAUSED) {  

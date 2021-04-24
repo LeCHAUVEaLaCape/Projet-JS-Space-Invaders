@@ -1,4 +1,4 @@
-export function collisionDetection(joueur,level,terminer){
+export function collisionDetectionTirJoueur(joueur,level){
     // console.error(tableau2.lenRow)
     let tirADelete 
     let alienADelete
@@ -10,9 +10,9 @@ export function collisionDetection(joueur,level,terminer){
 
                 if(level.aliens[k][i]!=null){
                     if (joueur.tableau[indexTir].position.y>=level.aliens[k][i].position.y 
-                        && joueur.tableau[indexTir].position.y<=level.aliens[k][i].position.y+32 
+                        && joueur.tableau[indexTir].position.y<=level.aliens[k][i].position.y+level.height
                         && joueur.tableau[indexTir].position.x>=level.aliens[k][i].position.x
-                        && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+32){ //X
+                        && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+level.width ){ //X
                         // console.log("touché")
                         // noter les index
                         level.maxSpeed +=0.1 
@@ -37,7 +37,7 @@ export function collisionDetection(joueur,level,terminer){
         if (temp(j)==true) break
     }
 
-    // A DEPLACER
+    // A OPTIMISER ?
     if (tirADelete != undefined){
         // Pour supprimer le tir
         let res =[] 
@@ -69,7 +69,7 @@ export function collisionDetection(joueur,level,terminer){
             }
         }
         function tmpGauche(j) {
-            for(let i in level.aliens){
+            for(let i in level.aliens[0]){
                 if (level.aliens[j][i]!=null){
                     level.rowGauche = j
                     level.indexGauche = i
@@ -86,11 +86,42 @@ export function collisionDetection(joueur,level,terminer){
         for (let j =level.aliens[0].length-1;j>=0;j--){
             if(droite==false) tmpDroite(j)
         }
-
-        if (droite==false || gauche==false){
-            terminer =true
+        
+        if (droite==false && gauche==false){
+            level.terminer = true
+            
+            return 
         }
         level.indexRefreshment()
     }
 
+}
+export function collisionDetectionTirAliens(level,joueur){
+
+    function temp(indexTir){
+        for (let k in level.aliens){
+            for(let i in level.aliens[k]){
+
+
+            }
+        }
+        return false
+    }
+    // On parcours le tableau des "tirs"
+    for (let j in level.tableau){
+
+        if(level.aliens[k][i]!=null){
+            if (joueur.tableau[indexTir].position.y >= level.aliens[k][i].position.y 
+                && joueur.tableau[indexTir].position.y <= level.aliens[k][i].position.y+ 32
+                && joueur.tableau[indexTir].position.x >= level.aliens[k][i].position.x
+                && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+32){ //X
+                // console.log("touché")
+                
+                
+                return true
+            };
+            
+        }
+    }
+    return false
 }

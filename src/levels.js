@@ -20,6 +20,8 @@ export class Level{
         this.count=0
         this.indexPourTirAuto =[]
         this.tableau =[] // Array des "tirs"
+        
+        this.terminer =false
     }
     init(){
         // initialise l'attribut tableau pour les tirs "auto" des aliens
@@ -30,16 +32,18 @@ export class Level{
         this.cooldown += deltatime
         this.tirAuto()
         this.tableau = this.tableau.filter(e=> e.update() ==false)
-        // position x du dernier alien de la rangée
-
-        if(this.aliens[this.rowDroite][this.indexDroite].position.x+this.width> this.game.gameWidth){
-            this.bougeAGauche()
-            this.goDown()
-        }else if (this.aliens[this.rowGauche][this.indexGauche].position.x < 0) {
-            this.bougeADroite()
-            this.goDown()
+        // regarde si le jeu est terminer
+        if(this.terminer==false){
+            // position x du dernier alien de la rangée
+            if(this.aliens[this.rowDroite][this.indexDroite].position.x+this.width> this.game.gameWidth){
+                this.bougeAGauche()
+                this.goDown()
+            }else if (this.aliens[this.rowGauche][this.indexGauche].position.x < 0) {
+                this.bougeADroite()
+                this.goDown()
+            }
+            this.deplacement()
         }
-        this.deplacement()
     }
     draw(ctx){
         for(let E of this.aliens){
@@ -90,6 +94,7 @@ export class Level{
     bougeAGauche(){
         this.speed = -this.maxSpeed
     }
+    // Pour le tir auto des aliens
     indexRefreshment(){
         this.indexPourTirAuto= []
         for (let i in this.aliens[0]){ // ranger
