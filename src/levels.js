@@ -17,38 +17,34 @@ export class Level{
         this.game =game
 
         this.cooldown = 0
-        this.count=0
+        this.length= this.aliens[0].length // Largeur
         this.indexPourTirAuto =[]
         this.tableau =[] // Array des "tirs"
         
         this.terminer =false
-    }
-    init(){
-        // initialise l'attribut tableau pour les tirs "auto" des aliens
         this.indexRefreshment()
-        this.count = this.aliens[0].length
+        this.ratioImage = 23.04
+        this.step = 0
     }
     update(deltatime){
         this.cooldown += deltatime
         this.tirAuto()
         this.tableau = this.tableau.filter(e=> e.update() ==false)
-        // regarde si le jeu est terminer
-        if(this.terminer==false){
-            // position x du dernier alien de la rangée
-            if(this.aliens[this.rowDroite][this.indexDroite].position.x+this.width> this.game.gameWidth){
-                this.bougeAGauche()
-                this.goDown()
-            }else if (this.aliens[this.rowGauche][this.indexGauche].position.x < 0) {
-                this.bougeADroite()
-                this.goDown()
-            }
-            this.deplacement()
+        
+        // position x du dernier alien de la rangée
+        if(this.aliens[this.rowDroite][this.indexDroite].position.x+this.width> this.game.gameWidth){
+            this.bougeAGauche()
+            this.goDown()
+        }else if (this.aliens[this.rowGauche][this.indexGauche].position.x < 0) {
+            this.bougeADroite()
+            this.goDown()
         }
+        this.deplacement()
     }
     draw(ctx){
         for(let E of this.aliens){
             for (let e of E){
-                if(e!=null)     ctx.drawImage(e.image,e.position.x, e.position.y ,e.width,e.height)
+                if(e!=null)     ctx.drawImage(e.image, 0, 0, 11, 8, e.position.x, e.position.y,32,this.ratioImage)
             }
         }
         for (let e of this.tableau){
@@ -116,12 +112,12 @@ export class Level{
     tirAuto(){
         if (this.cooldown>1000){
             this.cooldown= this.cooldown - 1000
-            let index = getRandomInt(this.count) 
+            let index = getRandomInt(this.length) 
             if(this.indexPourTirAuto[index] != -1){
                 // Selectionne un objet Alien
                 let select = this.aliens[ this.indexPourTirAuto[index] ][index]
 
-                this.tableau.push(new TirAlien(select.position.x,select.position.y,this.game))
+                this.tableau.push(new TirAlien(select.position.x,select.position.y+this.height,this.game))
             }
         }
     }
@@ -177,8 +173,8 @@ class Alien {
     //créer un Alien avec sa position (x et y)
     constructor(game,position){
         this.image = document.getElementById("alien")
-        this.width = this.image.naturalWidth 
-        this.height = this.image.naturalHeight
+        this.width = 32
+        this.height = 32
         this.position = position
     }
 }

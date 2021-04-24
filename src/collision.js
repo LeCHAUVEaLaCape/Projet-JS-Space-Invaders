@@ -1,4 +1,5 @@
-export function collisionDetectionTirJoueur(joueur,level){
+import {GAME_STATE }from "./gameState.js"
+export function collisionDetectionTirJoueur(joueur,level,gamestate){
     // console.error(tableau2.lenRow)
     let tirADelete 
     let alienADelete
@@ -12,7 +13,7 @@ export function collisionDetectionTirJoueur(joueur,level){
                     if (joueur.tableau[indexTir].position.y>=level.aliens[k][i].position.y 
                         && joueur.tableau[indexTir].position.y<=level.aliens[k][i].position.y+level.height
                         && joueur.tableau[indexTir].position.x>=level.aliens[k][i].position.x
-                        && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+level.width ){ //X
+                        && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+level.width){ //X
                         // console.log("touché")
                         // noter les index
                         level.maxSpeed +=0.1 
@@ -88,40 +89,27 @@ export function collisionDetectionTirJoueur(joueur,level){
         }
         
         if (droite==false && gauche==false){
-            level.terminer = true
-            
+            gamestate.state = GAME_STATE.MENU
             return 
         }
         level.indexRefreshment()
     }
 
 }
-export function collisionDetectionTirAliens(level,joueur){
+export function collisionDetectionTirAliens(level,joueur,gamestate){
+    for (let i in level.tableau){
+        if(level.tableau[i].position.y>=joueur.position.y
+            && level.tableau[i].position.y<=joueur.position.y+joueur.height
+            && level.tableau[i].position.x>=joueur.position.x
+            && level.tableau[i].position.x<= joueur.position.x+joueur.width){
+            joueur.vie -= 1;
+            level.tableau = []
 
-    function temp(indexTir){
-        for (let k in level.aliens){
-            for(let i in level.aliens[k]){
-
-
+            if (joueur.vie <0){
+                gamestate.state = GAME_STATE.GAMEOVER
             }
-        }
-        return false
-    }
-    // On parcours le tableau des "tirs"
-    for (let j in level.tableau){
-
-        if(level.aliens[k][i]!=null){
-            if (joueur.tableau[indexTir].position.y >= level.aliens[k][i].position.y 
-                && joueur.tableau[indexTir].position.y <= level.aliens[k][i].position.y+ 32
-                && joueur.tableau[indexTir].position.x >= level.aliens[k][i].position.x
-                && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+32){ //X
-                // console.log("touché")
-                
-                
-                return true
-            };
-            
+            // console.error(joueur.vie)
+            return
         }
     }
-    return false
 }

@@ -18,6 +18,7 @@ export default class Joueur{
         this.tableau = []
         this.game =game
         this.cooldown =0
+        this.vie= 0
     }
     draw(ctx){
         this.tableau.forEach(e=>{ // A VOIR
@@ -29,7 +30,6 @@ export default class Joueur{
         this.cooldown +=deltatime
         
         this.position.x +=this.speed;
-        
         this.tableau = this.tableau.filter(e=> e.update() ==false)
 
         if (this.position.x <= 0) this.position.x =0
@@ -46,8 +46,8 @@ export default class Joueur{
     }
     actionTirer(){
         if (this.cooldown>1000){
-            this.tableau.push(new Tir(this.position.x,this.position.y,this.game))
             this.cooldown =0
         }
+        this.tableau.push(new Tir(this.position.x,this.position.y,this.game))
     }
 }

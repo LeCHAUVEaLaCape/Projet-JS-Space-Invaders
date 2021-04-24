@@ -4,7 +4,6 @@ export default class InputHandler{
     constructor(joueur,game){
         // touche appuyée
         document.addEventListener('keydown',event=>{
-            // alert(event.code);
             switch (event.code){
                 case "ArrowLeft":
                     joueur.bougegauche();
@@ -19,7 +18,7 @@ export default class InputHandler{
                     game.escapeActions()
                     break;
                 case "Enter":
-                    game.enterActions()
+                    game.start()
                     break;
             }
         });
