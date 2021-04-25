@@ -18,9 +18,14 @@ export default class Joueur{
         this.tableau = []
         this.game =game
         this.cooldown =0
-        this.vie= 0
+        this.vie= 3
     }
     draw(ctx){
+        // Affiche la vie
+        for(let i=0;i<this.vie;i++){
+            ctx.drawImage(this.player,this.width+this.width*i,this.game_height-this.height)
+        }
+
         this.tableau.forEach(e=>{ // A VOIR
             e.draw(ctx)
         })
@@ -45,9 +50,9 @@ export default class Joueur{
         this.speed =0;
     }
     actionTirer(){
-        if (this.cooldown>1000){
+        if (this.cooldown>500){
+            this.tableau.push(new Tir(this.position.x+Math.floor(this.width/2),this.position.y,this.game))
             this.cooldown =0
         }
-        this.tableau.push(new Tir(this.position.x,this.position.y,this.game))
     }
 }

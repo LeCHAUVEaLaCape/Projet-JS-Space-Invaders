@@ -14,8 +14,8 @@ export class Level{
         this.width = 32
         
         this.stackspeed = 0
-        this.maxSpeed =0.3
-        this.speed =0.3
+        this.maxSpeed =0.4
+        this.speed =0.4
         this.game =game
 
         this.cooldown = 0
@@ -26,6 +26,7 @@ export class Level{
         this.terminer =false
         this.indexRefreshment()
         this.ratioImage = 23.04
+        // Pour sprite
         this.step = 0
     }
     update(deltatime){
@@ -112,8 +113,8 @@ export class Level{
         }
     }
     tirAuto(){
-        if (this.cooldown>1000){
-            this.cooldown= this.cooldown - 1000
+        if (this.cooldown>=500){
+            this.cooldown= this.cooldown - 500
             let index = getRandomInt(this.length) 
             if(this.indexPourTirAuto[index] != -1){
                 // Selectionne un objet Alien
@@ -164,7 +165,7 @@ class TirAlien {
         this.position.y += this.vitesseDesTirs
         // Retourne true ou false
         // pour supprimer le tir lorsqu'il sort en bas de l'écran (true)
-        return (this.position.y>600)
+        return (this.position.y>this.gameHeight)
     }
     draw(ctx){
         ctx.drawImage(this.image,this.position.x,this.position.y)
@@ -174,6 +175,7 @@ class TirAlien {
 class Alien {
     //créer un Alien avec sa position (x et y)
     constructor(game,position){
+        this.game =game
         this.image = document.getElementById("alien")
         this.width = 32
         this.height = 32
@@ -181,9 +183,9 @@ class Alien {
     }
 }
 export const level_Test = [
-    [1,1,1,1,0,0,1,1,1,1],
-    [1,1,1,1,0,0,1,1,1,1],
-    [1,1,1,1,0,0,1,1,1,1], 
-    [1,1,1,1,0,0,1,1,1,1],
-    [1,1,1,1,0,0,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1],
+    [1,1,1,1,1,1,1,1,1,1]
 ]

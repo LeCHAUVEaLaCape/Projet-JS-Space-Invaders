@@ -1,5 +1,6 @@
 import {GAME_STATE }from "./gameState.js"
-export function collisionDetectionTirJoueur(joueur,level,gamestate){
+
+export function collisionDetectionTirJoueur(joueur,level,gamestate,score){
     // console.error(tableau2.lenRow)
     let tirADelete 
     let alienADelete
@@ -16,7 +17,7 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
                         && joueur.tableau[indexTir].position.x <= level.aliens[k][i].position.x+level.width){ //X
                         // console.log("touché")
                         // noter les index
-                        level.maxSpeed +=0.1 
+                        level.maxSpeed +=0.05 
                         if (level.speed<0){
                             level.speed = -level.maxSpeed
                         }else{
@@ -39,7 +40,9 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
     }
 
     // A OPTIMISER ?
+    // Collision Tir -> Alien ==true
     if (tirADelete != undefined){
+        score.score += 10
         // Pour supprimer le tir
         let res =[] 
         for (let i in joueur.tableau){
@@ -88,10 +91,10 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
         for (let j =level.aliens[0].length-1;j>=0;j--){
             if(droite==false) tmpDroite(j)
         }
-        // Si il y a plus d'alien
+        // Si il n'y a plus d'alien
         if (droite==false && gauche==false){
-            gamestate.state = GAME_STATE.MENU
-            return 
+            document.location.reload()
+            // return 
         }
         //recherche l'alien le plus bas
         function tmpBas(i){

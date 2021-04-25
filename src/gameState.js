@@ -17,6 +17,8 @@ export class Gamestate{
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.fillText("Paused", this.game.gameWidth / 2, this.game.gameHeight / 2);
+        let music =document.getElementById("music")
+        music.muted =true
     }
     gameover(ctx){
         ctx.rect(0, 0, this.game.gameWidth, this.game.gameHeight)
@@ -26,6 +28,7 @@ export class Gamestate{
         ctx.fillStyle = "white";
         ctx.textAlign = "center";
         ctx.fillText("GAME OVER", this.game.gameWidth / 2, this.game.gameHeight / 2);
+        setTimeout("location.reload();",2000);
     }
     menu(ctx){
         ctx.rect(0, 0, this.game.gameWidth, this.game.gameHeight);
