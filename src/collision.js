@@ -46,9 +46,9 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
             if (i!=tirADelete)res.push(joueur.tableau[i])
         }
         joueur.tableau =res
+        
         // Pour suppprimer l'alien
         res=[] 
-        
         for (let i in level.aliens){
             let resTmp =[]
             for (let j in level.aliens[i]){
@@ -58,7 +58,8 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
         }
         level.aliens =res
 
-        // Redefinit le bord de droite des aliens
+        // Redefinit les bords à droite et à gauche des aliens
+        // pour les collisions avec l'ecran
         function tmpDroite(j){
             for (let i=level.aliens.length-1;i>=0;i--){
                 if (level.aliens[i][j]!= null){
@@ -70,10 +71,10 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
             }
         }
         function tmpGauche(j) {
-            for(let i in level.aliens[0]){
-                if (level.aliens[j][i]!=null){
-                    level.rowGauche = j
-                    level.indexGauche = i
+            for(let i=level.aliens.length-1;i>=0;i--){
+                if (level.aliens[i][j]!=null){
+                    level.rowGauche = i
+                    level.indexGauche = j
                     gauche= true
                     break
                 }
@@ -81,20 +82,42 @@ export function collisionDetectionTirJoueur(joueur,level,gamestate){
         }
         let droite = false
         let gauche = false
-        for (let j = 0;j<level.aliens.length;j++){
+        for (let j in level.aliens[0]){
             if(gauche==false) tmpGauche(j)
         }
         for (let j =level.aliens[0].length-1;j>=0;j--){
             if(droite==false) tmpDroite(j)
         }
-        
+        // Si il y a plus d'alien
         if (droite==false && gauche==false){
             gamestate.state = GAME_STATE.MENU
             return 
         }
+        //recherche l'alien le plus bas
+        function tmpBas(i){
+            for (let j in level.aliens[i]){
+                if (level.aliens[i][j]!=null){
+                    level.rowBas = i
+                    level.indexBas = j
+                    // console.error(level.rowBas,level.indexBas)
+                    return true
+                }
+            }
+            return false
+        }
+        for (let i=level.aliens.length-1;i>=0;i--){
+            if (tmpBas(i)==true) break
+        }
         level.indexRefreshment()
-    }
 
+    }
+    // Si alien le plus bas est à la meme hauteur que joueur
+    if( level.aliens[level.rowBas][level.indexBas].position.y+ level.height >= joueur.position.y 
+        && level.aliens[level.rowBas][level.indexBas].position.y <= joueur.position.y + joueur.height){
+
+            gamestate.state = GAME_STATE.GAMEOVER // Collision
+
+    }
 }
 export function collisionDetectionTirAliens(level,joueur,gamestate){
     for (let i in level.tableau){

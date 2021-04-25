@@ -6,6 +6,8 @@ export class Level{
         this.rowGauche = 0
         this.indexDroite = whatLevel[0].length -1 //A FAIRE
         this.rowDroite = 0
+        this.indexBas = 0
+        this.rowBas = 0
         
         this.game = game // Attention à ne pas l'utliser n'importe comment
         this.height = 32
@@ -148,7 +150,7 @@ function getRandomInt(max){
 }
 class TirAlien {
     constructor(positionX,positionY,game){
-        this.image = document.getElementById('img_tir')
+        this.image = document.getElementById('img_tirAlien')
         this.position ={
             x: positionX,
             y: positionY,
@@ -156,7 +158,7 @@ class TirAlien {
         this.size = 16
         this.aliens =game.level.ennemies
         this.level = game.level
-        this.vitesseDesTirs= 5
+        this.vitesseDesTirs= 2
     }
     update(){
         this.position.y += this.vitesseDesTirs
@@ -183,5 +185,5 @@ export const level_Test = [
     [1,1,1,1,0,0,1,1,1,1],
     [1,1,1,1,0,0,1,1,1,1], 
     [1,1,1,1,0,0,1,1,1,1],
-    // [1,1,1,1,0,0,1,1,1,1],
+    [1,1,1,1,0,0,1,1,1,1],
 ]
