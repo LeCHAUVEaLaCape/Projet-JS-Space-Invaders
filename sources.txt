@@ -1,0 +1,5 @@
+https://www.youtube.com/watch?v=yna816VY8rg - Sprite et Animation
+https://www.youtube.com/watch?v=3EMxBkqC4z0 - Games in JS
+https://developer.mozilla.org/fr/docs/Web/JavaScript - Doc officiel
+https://youtu.be/OuRvOCf9mJ4?list=PLwJjxqYuirCLkq42mGw4XKGQlpZSfxsYd - Music used
+https://www.deviantart.com/norma2d/art/Blue-space-812418072 - Background used
